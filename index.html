@@ -140,13 +140,14 @@ header h5 {
   <script>
     // Firebase config
     const firebaseConfig = {
-      apiKey: "AIzaSyAhBcrNfn9E3WWkUMeik1dmPaAg4ULBrNc",
-      authDomain: "ganovote.firebaseapp.com",
-      projectId: "ganovote",
-      storageBucket: "ganovote.firebasestorage.app",
-      messagingSenderId: "864970635365",
-      appId: "1:864970635365:web:8452ccb885ec809fb1ee8c",
-    };
+  apiKey: "AIzaSyAhBcrNfn9E3WWkUMeik1dmPaAg4ULBrNc",
+  authDomain: "ganovote.firebaseapp.com",
+  projectId: "ganovote",
+  storageBucket: "ganovote.appspot.com",
+  messagingSenderId: "864970635365",
+  appId: "1:864970635365:web:8452ccb885ec809fb1ee8c",
+  databaseURL: "https://ganovote-default-rtdb.firebaseio.com"
+};
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -212,19 +213,20 @@ if (!storedVotes || storedVotes.length !== parties.length) {
     }
 
     function castVote(index) {
-      if (voted) {
-        alert("শুধুমাত্র একবার ভোট দেওয়া যাবে!");
-        return;
-      }
-      votes[index]++;
-      localStorage.setItem("votes", JSON.stringify(votes));
-      localStorage.setItem("voted", true);
-      updateResults();
-      alert("আপনার ভোট গ্রহণ করা হয়েছে!");
-    }
+  if (localStorage.getItem("voted")) {
+    alert("শুধুমাত্র একবার ভোট দেওয়া যাবে!");
+    return;
+  }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
+  const partyKey = parties[index];
+
+  // Firebase এ ভোট যোগ করা
+  db.ref("votes/" + partyKey).transaction(current => {
+    return (current || 0) + 1;
+  });
+
+  localStorage.setItem("voted", true);
+  alert("আপনার ভোট গ্রহণ করা হয়েছে!");
     }
 
     parties.forEach((party, index) => {
