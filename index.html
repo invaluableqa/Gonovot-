@@ -33,9 +33,13 @@
       padding: 20px 10px;
     }
 
-    h1 {
-      font-size: 2em;
-    }
+    header h1 {
+  margin-bottom: 5px;
+}
+
+header h5 {
+  margin-top: 5px;
+}
 
     .vote-container {
       display: flex;
@@ -117,6 +121,16 @@
         width: 90%;
       }
     }
+      .notice {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  margin: 20px;
+  border-radius: 8px;
+  font-size: 1em;
+  text-align: center;
+      }
   </style>
   
   <!-- Firebase SDK -->
@@ -141,11 +155,15 @@
 </head>
 <body>
   <header>
-    <h1>আপনি কোনটা চান?!</h1>
-    <h5>তাড়াতাড়ি ভোট দিয়ে জানিয়ে দিন </h5>
+    <h1>গণভোট-PLEBISCITE</h1>
+    <h5>Created by Joy Ahmed with 4 hours pure dedication</h5>
     <button class="dark-toggle" onclick="toggleDarkMode()">ডার্ক মোড টগল</button>
   </header>
-
+<div class="notice">
+  <strong>বিশেষ দ্রষ্টব্য:</strong> এই প্ল্যাটফর্মটি বাংলাদেশের ইতিহাসে প্রথম স্বচ্ছ ও নিরপেক্ষ অনলাইন ভোটিং সিস্টেম—যেখানে প্রতিটি নাগরিক নিজের মতামত প্রকাশ করতে পারে এবং সকলেই দেখতে পারে জনগণ আসলে কী চায়।    
+  <br><br>
+  আপনার ভোটই প্রমাণ করবে—দেশ কি চায়!
+</div>
   <div class="vote-container" id="voteContainer"></div>
 
   <div class="results" id="results">
@@ -157,12 +175,21 @@
       "ড: মুহাম্মদ ইউনূস",
       "বাংলাদেশ আওয়ামী লীগ (নিষিদ্ধ)",
       "বাংলাদেশ জাতীয়তাবাদী দল (BNP)",
-      "জাতীয় পার্টি",
       "বাংলাদেশ জামায়াতে ইসলামী",
-      "জাতীয় নাগরিক পার্টি"
+      "জাতীয় নাগরিক পার্টি (NCP)",
+      "অন্যান্য কিংবা কোন মতামত নাই"
     ];
 
-    let votes = JSON.parse(localStorage.getItem("votes")) || new Array(parties.length).fill(0);
+    let storedVotes = JSON.parse(localStorage.getItem("votes"));
+let votes;
+
+if (!storedVotes || storedVotes.length !== parties.length) {
+  votes = new Array(parties.length).fill(0);
+  localStorage.setItem("votes", JSON.stringify(votes));
+  localStorage.setItem("voted", false); // আগের ভোট মুছে ফেলে আবার ভোট দিতে পারবে
+} else {
+  votes = storedVotes;
+}
     const voted = localStorage.getItem("voted");
 
     const voteContainer = document.getElementById("voteContainer");
@@ -186,7 +213,7 @@
 
     function castVote(index) {
       if (voted) {
-        alert("আপনি ইতোমধ্যেই ভোট দিয়েছেন!");
+        alert("মুরুব্বী মুরুব্বী উহু উহু!");
         return;
       }
       votes[index]++;
