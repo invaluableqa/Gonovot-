@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="bn">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>গণভোট | আপনি কাকে ক্ষমতায় দেখতে চান?</title>
+
+  <script type="module">
+
+  // Import the functions you need from the SDKs you need
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyBSDFB_Pi2bv4LJYnUBannsdoQd8G6wfiw",
+
+    authDomain: "vote-407b9.firebaseapp.com",
+
+    projectId: "vote-407b9",
+
+    storageBucket: "vote-407b9.firebasestorage.app",
+
+    messagingSenderId: "1017985456867",
+
+    appId: "1:1017985456867:web:2f289dcdac4a4da4de03d6",
+
+    measurementId: "G-NK9DYTVY5J"
+
+  };
+
+  // Initialize Firebase
+
+  const app = initializeApp(firebaseConfig);
+
+  const analytics = getAnalytics(app);
+
+</script>
+  <style>
+    :root {
+      --primary: #00796b;
+      --primary-dark: #004d40;
+      --background: #ffffff;
+      --text: #000000;
+    }
+
+    body.dark-mode {
+      --background: #121212;
+      --text: #ffffff;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      background: linear-gradient(to right, #8b0000, #b30000);
+      /* Jamuna স্টাইল */
+      color: white;
+      padding: 20px 10px;
+      position: relative;
+    }
+
+    header h1 {
+      margin-bottom: 5px;
+    }
+
+    header h5 {
+      margin-top: 5px;
+    }
+
+    .vote-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px 10px;
+    }
+
+    .party-card {
+      background: var(--background);
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      margin: 15px;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .party-card:hover {
+      transform: scale(1.05);
+    }
+
+    .party-name {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    .vote-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .results {
+      margin-top: 40px;
+      padding: 0 20px;
+    }
+
+    .bar-container {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      position: relative;
+      height: 24px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      background-color: var(--primary-dark);
+      text-align: left;
+      color: white;
+      padding-left: 10px;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      font-size: 0.9em;
+    }
+
+    .dark-toggle {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 8px 10px;
+      border-radius: 80px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .home-button:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      .party-card {
+        width: 90%;
+      }
+    }
+
+    .notice {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 15px;
+      margin: 20px;
+      border-radius: 8px;
+      font-size: 1em;
+      text-align: center;
+    }
+  </style>
+
+  <!-- Firebase SDK -->
+
+  <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhBcrNfn9E3WWkUMeik1dmPaAg4ULBrNc",
+      authDomain: "ganovote.firebaseapp.com",
+      projectId: "ganovote",
+      storageBucket: "ganovote.firebasestorage.app",
+      messagingSenderId: "864970635365",
+      appId: "1:864970635365:web:8452ccb885ec809fb1ee8c",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  </script>
+
+</head>
+
+<body>
+
+  <header>
+
+    <a href="https://jamuna.tv/" class="home-button">Home</a>
+
+    <h1>গণভোট-PLEBISCITE</h1>
+
+    <h5>Powered by Jamuna TV</h5>
+
+    <button class="dark-toggle" onclick="toggleDarkMode()">Theme</button>
+
+  </header>
+
+  <div class="notice">
+
+    <strong>বিশেষ দ্রষ্টব্য:</strong> এই প্ল্যাটফর্মটি বাংলাদেশের ইতিহাসে প্রথম স্বচ্ছ ও নিরপেক্ষ অনলাইন ভোটিং সিস্টেম—যেখানে প্রতিটি নাগরিক নিজের মতামত প্রকাশ করতে পারে এবং সকলেই দেখতে পারে জনগণ আসলে কী চায়।
+
+    <br><br>
+
+    আপনার ভোটই প্রমাণ করবে—দেশ কি চায়!
+
+  </div>
+
+  <div class="vote-container" id="voteContainer"></div>
+
+  <div class="results" id="results">
+
+    <h2>ভোটের ফলাফল (লাইভ)</h2>
+
+  </div>
+
+  <script>
+    const parties = [
+      "ড: মুহাম্মদ ইউনূস (Yunus)",
+      "বাংলাদেশ আওয়ামী লীগ (নিষিদ্ধ)",
+      "বাংলাদেশ জাতীয়তাবাদী দল (BNP)",
+      "বাংলাদেশ জামায়াতে ইসলামী (Jamaat)",
+      "জাতীয় নাগরিক পার্টি (NCP)",
+      "অন্যান্য কিংবা দ্বিধাগ্রস্ত"
+    ];
+    let storedVotes = JSON.parse(localStorage.getItem("votes"));
+    let votes;
+    if (!storedVotes || storedVotes.length !== parties.length) {
+      votes = new Array(parties.length).fill(0);
+      localStorage.setItem("votes", JSON.stringify(votes));
+      localStorage.setItem("voted", false);
+    } else {
+      votes = storedVotes;
+    }
+    const voted = localStorage.getItem("voted");
+    const voteContainer = document.getElementById("voteContainer");
+    const results = document.getElementById("results");
+
+    function updateResults() {
+      results.innerHTML = '<h2>ভোটের ফলাফল (লাইভ)</h2>';
+      let total = votes.reduce((a, b) => a + b, 0);
+      parties.forEach((party, index) => {
+        let percent = total ? (votes[index] / total * 100).toFixed(1) : 0;
+        results.innerHTML += `
+
+          <div>
+
+            <strong>${party}</strong>
+
+            <div class="bar-container">
+
+              <div class="bar" style="width: ${percent}%;">${votes[index]} ভোট (${percent}%)</div>
+
+            </div>
+
+          </div>
+
+        `;
+      });
+    }
+
+    function castVote(index) {
+      if (voted === "true") {
+        alert("ইতিমধ্যে ভোট দিয়েছেন!");
+        return;
+      }
+      votes[index]++;
+      localStorage.setItem("votes", JSON.stringify(votes));
+      localStorage.setItem("voted", true);
+      updateResults();
+      alert("আপনার ভোট গ্রহণ করা হয়েছে!");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+    parties.forEach((party, index) => {
+      const card = document.createElement("div");
+      card.className = "party-card";
+      card.innerHTML = `
+
+        <div class="party-name">${party}</div>
+
+        <button class="vote-btn" onclick="castVote(${index})">Vote</button>
+
+      `;
+      voteContainer.appendChild(card);
+    });
+    updateResults();
+  </script>
+
+</body>
+
+</html>
