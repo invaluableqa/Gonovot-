@@ -202,25 +202,6 @@
     }
   </style>
 
-  <!-- Firebase SDK -->
-
-  <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhBcrNfn9E3WWkUMeik1dmPaAg4ULBrNc",
-      authDomain: "ganovote.firebaseapp.com",
-      projectId: "ganovote",
-      storageBucket: "ganovote.firebasestorage.app",
-      messagingSenderId: "864970635365",
-      appId: "1:864970635365:web:8452ccb885ec809fb1ee8c",
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-  </script>
-
 </head>
 
 <body>
@@ -264,24 +245,41 @@
       "জাতীয় নাগরিক পার্টি (NCP)",
       "অন্যান্য কিংবা দ্বিধাগ্রস্ত"
     ];
+    
     let storedVotes = JSON.parse(localStorage.getItem("votes"));
+
     let votes;
+
     if (!storedVotes || storedVotes.length !== parties.length) {
+
       votes = new Array(parties.length).fill(0);
+
       localStorage.setItem("votes", JSON.stringify(votes));
+
       localStorage.setItem("voted", false);
+
     } else {
+
       votes = storedVotes;
+
     }
+
     const voted = localStorage.getItem("voted");
+
     const voteContainer = document.getElementById("voteContainer");
+
     const results = document.getElementById("results");
 
     function updateResults() {
+
       results.innerHTML = '<h2>ভোটের ফলাফল (লাইভ)</h2>';
+
       let total = votes.reduce((a, b) => a + b, 0);
+
       parties.forEach((party, index) => {
+
         let percent = total ? (votes[index] / total * 100).toFixed(1) : 0;
+
         results.innerHTML += `
 
           <div>
@@ -297,27 +295,45 @@
           </div>
 
         `;
+
       });
+
     }
 
     function castVote(index) {
+
       if (voted === "true") {
+
         alert("ইতিমধ্যে ভোট দিয়েছেন!");
+
         return;
+
       }
+
       votes[index]++;
+
       localStorage.setItem("votes", JSON.stringify(votes));
+
       localStorage.setItem("voted", true);
+
       updateResults();
+
       alert("আপনার ভোট গ্রহণ করা হয়েছে!");
+
     }
 
     function toggleDarkMode() {
+
       document.body.classList.toggle("dark-mode");
+
     }
+
     parties.forEach((party, index) => {
+
       const card = document.createElement("div");
+
       card.className = "party-card";
+
       card.innerHTML = `
 
         <div class="party-name">${party}</div>
@@ -325,11 +341,22 @@
         <button class="vote-btn" onclick="castVote(${index})">Vote</button>
 
       `;
+
       voteContainer.appendChild(card);
+
     });
+
     updateResults();
+
   </script>
 
 </body>
 
 </html>
+
+<!-- partial -->
+
+</body>
+
+</html>
+    
