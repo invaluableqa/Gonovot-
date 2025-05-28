@@ -34,12 +34,12 @@
     }
 
     header h1 {
-  margin-bottom: 5px;
-}
+      margin-bottom: 5px;
+    }
 
-header h5 {
-  margin-top: 5px;
-}
+    header h5 {
+      margin-top: 5px;
+    }
 
     .vote-container {
       display: flex;
@@ -121,18 +121,19 @@ header h5 {
         width: 90%;
       }
     }
-      .notice {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-  padding: 15px;
-  margin: 20px;
-  border-radius: 8px;
-  font-size: 1em;
-  text-align: center;
-      }
+
+    .notice {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 15px;
+      margin: 20px;
+      border-radius: 8px;
+      font-size: 1em;
+      text-align: center;
+    }
   </style>
-  
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js"></script>
@@ -140,14 +141,14 @@ header h5 {
   <script>
     // Firebase config
     const firebaseConfig = {
-  apiKey: "AIzaSyAhBcrNfn9E3WWkUMeik1dmPaAg4ULBrNc",
-  authDomain: "ganovote.firebaseapp.com",
-  projectId: "ganovote",
-  storageBucket: "ganovote.appspot.com",
-  messagingSenderId: "864970635365",
-  appId: "1:864970635365:web:8452ccb885ec809fb1ee8c",
-  databaseURL: "https://ganovote-default-rtdb.firebaseio.com"
-};
+      apiKey: "AIzaSyAhBcrNfn9E3WWkUMeik1dmPaAg4ULBrNc",
+      authDomain: "ganovote.firebaseapp.com",
+      projectId: "ganovote",
+      storageBucket: "ganovote.appspot.com",
+      messagingSenderId: "864970635365",
+      appId: "1:864970635365:web:8452ccb885ec809fb1ee8c",
+      databaseURL: "https://ganovote-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -157,14 +158,16 @@ header h5 {
 <body>
   <header>
     <h1>গণভোট-PLEBISCITE</h1>
-    <h5>Created by Joy Ahmed with 4 hours pure dedication</h5>
+    <h5>Powered by Jamuna TV</h5>
     <button class="dark-toggle" onclick="toggleDarkMode()">ডার্ক মোড টগল</button>
   </header>
-<div class="notice">
-  <strong>বিশেষ দ্রষ্টব্য:</strong> এই প্ল্যাটফর্মটি বাংলাদেশের ইতিহাসে প্রথম স্বচ্ছ ও নিরপেক্ষ অনলাইন ভোটিং সিস্টেম—যেখানে প্রতিটি নাগরিক নিজের মতামত প্রকাশ করতে পারে এবং সকলেই দেখতে পারে জনগণ আসলে কী চায়।    
-  <br><br>
-  আপনার ভোটই প্রমাণ করবে—দেশ কি চায়!
-</div>
+
+  <div class="notice">
+    <strong>বিশেষ দ্রষ্টব্য:</strong> এই প্ল্যাটফর্মটি বাংলাদেশের ইতিহাসে প্রথম স্বচ্ছ ও নিরপেক্ষ অনলাইন ভোটিং সিস্টেম—যেখানে প্রতিটি নাগরিক নিজের মতামত প্রকাশ করতে পারে এবং সকলেই দেখতে পারে জনগণ আসলে কী চায়।
+    <br><br>
+    আপনার ভোটই প্রমাণ করবে—দেশ কি চায়!
+  </div>
+
   <div class="vote-container" id="voteContainer"></div>
 
   <div class="results" id="results">
@@ -173,60 +176,55 @@ header h5 {
 
   <script>
     const parties = [
-      "ড: মুহাম্মদ ইউনূস",
-      "বাংলাদেশ আওয়ামী লীগ(নিষিদ্ধ)",
-      "বাংলাদেশ জাতীয়তাবাদী দল(BNP)",
-      "বাংলাদেশ জামায়াতে ইসলামী",
-      "জাতীয় নাগরিক পার্টি(NCP)",
-      "অন্যান্য কিংবা কোন মতামত নাই"
+      "ড: মুহাম্মদ ইউনূস (Yunus)",
+      "বাংলাদেশ আওয়ামী লীগ (নিষিদ্ধ)",
+      "বাংলাদেশ জাতীয়তাবাদী দল (BNP)",
+      "বাংলাদেশ জামায়াতে ইসলামী (Jamaat)",
+      "জাতীয় নাগরিক পার্টি (NCP)",
+      "অন্যান্য কিংবা দ্বিধাগ্রস্ত"
     ];
 
-    let storedVotes = JSON.parse(localStorage.getItem("votes"));
-let votes;
-
-if (!storedVotes || storedVotes.length !== parties.length) {
-  votes = new Array(parties.length).fill(0);
-  localStorage.setItem("votes", JSON.stringify(votes));
-  localStorage.setItem("voted", false); // আগের ভোট মুছে ফেলে আবার ভোট দিতে পারবে
-} else {
-  votes = storedVotes;
-}
     const voted = localStorage.getItem("voted");
-
     const voteContainer = document.getElementById("voteContainer");
     const results = document.getElementById("results");
 
-    function updateResults() {
-      results.innerHTML = '<h2>ভোটের ফলাফল (লাইভ)</h2>';
-      let total = votes.reduce((a, b) => a + b, 0);
-      parties.forEach((party, index) => {
-        let percent = total ? (votes[index] / total * 100).toFixed(1) : 0;
-        results.innerHTML += `
-          <div>
-            <strong>${party}</strong>
-            <div class="bar-container">
-              <div class="bar" style="width: ${percent}%;">${votes[index]} ভোট (${percent}%)</div>
-            </div>
-          </div>
-        `;
-      });
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
     }
 
     function castVote(index) {
-  if (localStorage.getItem("voted")) {
-    alert("শুধুমাত্র একবার ভোট দেওয়া যাবে!");
-    return;
-  }
+      if (localStorage.getItem("voted") === "true") {
+        alert("ইতিমধ্যে ভোট দিয়েছেন!");
+        return;
+      }
 
-  const partyKey = parties[index];
+      const voteRef = db.ref("votes/" + index);
+      voteRef.transaction((current) => {
+        return (current || 0) + 1;
+      });
 
-  // Firebase এ ভোট যোগ করা
-  db.ref("votes/" + partyKey).transaction(current => {
-    return (current || 0) + 1;
-  });
+      localStorage.setItem("voted", "true");
+      alert("আপনার ভোট গ্রহণ করা হয়েছে!");
+    }
 
-  localStorage.setItem("voted", true);
-  alert("আপনার ভোট গ্রহণ করা হয়েছে!");
+    function updateResults() {
+      db.ref("votes").on("value", (snapshot) => {
+        const data = snapshot.val() || {};
+        let total = Object.values(data).reduce((a, b) => a + b, 0);
+        results.innerHTML = '<h2>ভোটের ফলাফল (লাইভ)</h2>';
+        parties.forEach((party, index) => {
+          const count = data[index] || 0;
+          let percent = total ? ((count / total) * 100).toFixed(1) : 0;
+          results.innerHTML += `
+            <div>
+              <strong>${party}</strong>
+              <div class="bar-container">
+                <div class="bar" style="width: ${percent}%;">${count} ভোট (${percent}%)</div>
+              </div>
+            </div>
+          `;
+        });
+      });
     }
 
     parties.forEach((party, index) => {
